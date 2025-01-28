@@ -148,8 +148,8 @@ private void Update() {
         playerMovement2.positionX = -4; // Reset X position of Player 2
         playerMovement1.positionY = playerMovement1.lineTop.transform.position.y + (playerMovement1.playerHeight / 2); // Reset Y position of Player 1
         playerMovement2.positionY = playerMovement1.lineBottom.transform.position.y - (playerMovement2.playerHeight / 2); // Reset Y position of Player 2
-        playerMovement1.speedUp = 0.01f; // Reset speed of Player 1
-        playerMovement2.speedUp = 0.01f; // Reset speed of Player 2
+        //playerMovement1.speedUp = 0.01f; // Reset speed of Player 1
+        //playerMovement2.speedUp = 0.01f; // Reset speed of Player 2
         playerMovement1.timer = 0; // Reset Player 1's timer
         playerMovement2.timer = 0; // Reset Player 2's timer
 

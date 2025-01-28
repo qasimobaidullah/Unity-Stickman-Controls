@@ -53,25 +53,25 @@ public class PlayerMovement : MonoBehaviour
         if (identifier == "Player1")
         {
             // Ensure Player 1 stays within its lane (1.5 and 2.5 Y positions)
-            if (positionY > 2.55f)
+            if (positionY > 2.60f)
             {
-                positionY = 2.55f;
+                positionY = 2.60f;
             }
             else if (positionY < 1.45f)
             {
-                positionY = 1.45f;
+                positionY = 1.44f;
             }
         }
         else if (identifier == "Player2")
         {
             // Ensure Player 2 stays within its lane (-2.5 and -1.5 Y positions)
-            if (positionY < -2.55f)
+            if (positionY < -2.60f)
             {
-                positionY = -2.55f;
+                positionY = -2.60f;
             }
-            else if (positionY > -1.45f)
+            else if (positionY > -1.44f)
             {
-                positionY = -1.45f;
+                positionY = -1.44f;
             }
         }
 
@@ -93,9 +93,9 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))  // Move Player 1 Up
             {
-                if (positionY < 2.55f)
+                if (positionY < 2.60f)
                 {
-                    positionY = 2.55f;
+                    positionY = 2.60f;
                     changeLinesSound.Play();
 
                     transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = true;
@@ -105,9 +105,9 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.A))  // Move Player 1 Down
             {
-                if (positionY > 1.45f)
+                if (positionY > 1.44f)
                 {
-                    positionY = 1.45f;
+                    positionY = 1.44f;
                     changeLinesSound.Play();
                     transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
                     transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = true;
@@ -118,9 +118,9 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.P))  // Move Player 2 Up
             {
-                if (positionY < -1.45f)
+                if (positionY < -1.44f)
                 {
-                    positionY = -1.45f;
+                    positionY = -1.44f;
                     changeLinesSound.Play();
                     transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = true;
                     transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
@@ -129,9 +129,9 @@ public class PlayerMovement : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.L))  // Move Player 2 Down
             {
 
-                if (positionY > -2.55f)
+                if (positionY > -2.60f)
                 {
-                    positionY = -2.55f;
+                    positionY = -2.60f;
                     changeLinesSound.Play();
                     transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
                     transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = true;
