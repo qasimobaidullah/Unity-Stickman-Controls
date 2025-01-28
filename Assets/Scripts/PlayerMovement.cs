@@ -14,8 +14,6 @@ public class PlayerMovement : MonoBehaviour
     // Position variables
     public float positionX = -6;       // Starting X position
     public float positionY = 2.5f;     // Default Y position for Player 1
-    public bool up = true;             // Determines which line the player is on (true = top, false = bottom)
-
     // Speed and gameplay variables
     public float speedUp = 0.01f;      // Speed increment
     private AudioSource changeLinesSound; // Sound effect when switching lines
@@ -26,9 +24,6 @@ public class PlayerMovement : MonoBehaviour
     public string identifier;          // To differentiate Player 1 and Player 2
     public float playerHeight = 1f;    // The height of the player (adjust as needed)
 
-    // Screen Divide variables
-    private float screenHalfHeight;     // Half of the screen's height for dividing the screen vertically
-
     void Start()
     {
         changeLinesSound = GameObject.Find("changeLines").GetComponent<AudioSource>();
@@ -38,10 +33,14 @@ public class PlayerMovement : MonoBehaviour
         if (identifier == "Player1")
         {
             positionY = 2.55f; // Player 1 starts at 2.5 Y position (top lane)
+            transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = true;
+            transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
         }
         else if (identifier == "Player2")
         {
             positionY = -2.55f; // Player 2 starts at -2.5 Y position (bottom lane)
+            transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
+            transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = true;
         }
     }
 
@@ -98,6 +97,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     positionY = 2.55f;
                     changeLinesSound.Play();
+
+                    transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = true;
+                    transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
+
                 }
             }
             else if (Input.GetKeyDown(KeyCode.A))  // Move Player 1 Down
@@ -106,6 +109,8 @@ public class PlayerMovement : MonoBehaviour
                 {
                     positionY = 1.45f;
                     changeLinesSound.Play();
+                    transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
+                    transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = true;
                 }
             }
         }
@@ -113,18 +118,23 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.P))  // Move Player 2 Up
             {
-                if (positionY > -2.55f)
-                {
-                    positionY = -2.55f;
-                    changeLinesSound.Play();
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.L))  // Move Player 2 Down
-            {
                 if (positionY < -1.45f)
                 {
                     positionY = -1.45f;
                     changeLinesSound.Play();
+                    transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = true;
+                    transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.L))  // Move Player 2 Down
+            {
+
+                if (positionY > -2.55f)
+                {
+                    positionY = -2.55f;
+                    changeLinesSound.Play();
+                    transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
+                    transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = true;
                 }
             }
         }
