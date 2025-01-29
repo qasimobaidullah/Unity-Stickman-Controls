@@ -22,7 +22,6 @@ public class UIManager : MonoBehaviour
         playerMovement1 = GameObject.Find("Player1").GetComponent<PlayerMovement>();  // Player 1
         playerMovement2 = GameObject.Find("Player2").GetComponent<PlayerMovement>();  // Player 2
         spawnObstacles = GameObject.Find("Canvas").GetComponent<SpawnObstacles>();
-
         buttonClick = GameObject.Find("buttonClick").GetComponent<AudioSource>();
         mainUI.transform.Find("Score").GetComponent<Text>().text = "Score: " + PlayerPrefs.GetInt("bestScore", 0);
     }

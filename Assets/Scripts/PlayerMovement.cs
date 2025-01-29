@@ -32,13 +32,13 @@ public class PlayerMovement : MonoBehaviour
         // Set initial player positions based on screen division
         if (identifier == "Player1")
         {
-            positionY = 2.55f; // Player 1 starts at 2.5 Y position (top lane)
+            positionY = 2.60f; // Player 1 starts at 2.5 Y position (top lane)
             transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = true;
             transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
         }
         else if (identifier == "Player2")
         {
-            positionY = -2.55f; // Player 2 starts at -2.5 Y position (bottom lane)
+            positionY = -2.60f; // Player 2 starts at -2.5 Y position (bottom lane)
             transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
             transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = true;
         }
@@ -143,5 +143,35 @@ public class PlayerMovement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         GameObject.Find("Canvas").GetComponent<UIManager>().gameOver();
+
+
+        if (this.identifier == "Player1")
+        {
+transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
+transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
+            Instantiate(Resources.Load("explosion"), this.transform);
+            StartCoroutine(DestroyExplosion());
+        }
+        else
+        {
+            transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
+transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
+            Instantiate(Resources.Load("explosion"), this.transform);
+            StartCoroutine(DestroyExplosion());
+
+
+
+        }
     }
+
+    IEnumerator DestroyExplosion()
+    {
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        Debug.Log("here");
+        GameObject g = GameObject.FindGameObjectWithTag("explosion");
+        Destroy(g);
+        GameObject.Find("Canvas").GetComponent<UIManager>().restart();
+    }
+
 }
