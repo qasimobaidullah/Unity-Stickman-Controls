@@ -51,7 +51,6 @@ public class UIManager : MonoBehaviour
         mainUI.SetActive(false);
         gameplayUI.SetActive(true);
         pauseButton.SetActive(true);
-        buttonClick.Play();
     }
 
 
@@ -171,6 +170,5 @@ public class UIManager : MonoBehaviour
         gameplayUI.SetActive(false);  // Hide gameplay UI
         mainUI.transform.Find("Score").GetComponent<Text>().text = "Score: " + PlayerPrefs.GetInt("Score", 0); // Update best score text
         gameOverUI.SetActive(false);  // Hide game over UI
-        buttonClick.Play();  // Play button click sound
     }
 }

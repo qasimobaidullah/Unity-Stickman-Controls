@@ -16,17 +16,20 @@ public class PlayerMovement : MonoBehaviour
     public float positionY = 2.5f;     // Default Y position for Player 1
     // Speed and gameplay variables
     public float speedUp = 0.01f;      // Speed increment
-    private AudioSource changeLinesSound; // Sound effect when switching lines
+    private AudioSource changeLinesSound, throwSounds; // Sound effect when switching lines
     public float timer = 0;            // Timer for scoring
     public int score = 0;              // Shared score for both players
 
     // Control and identifier
     public string identifier;          // To differentiate Player 1 and Player 2
     public float playerHeight = 1f;    // The height of the player (adjust as needed)
-
+    public Transform throwPoint; // Assign the position from where to throw
+    public float throwForce = 5f;
     void Start()
     {
         changeLinesSound = GameObject.Find("changeLines").GetComponent<AudioSource>();
+        throwSounds = GameObject.Find("throw").GetComponent<AudioSource>();
+
         scoreText = scoreUI.GetComponent<Text>();
 
         // Set initial player positions based on screen division
@@ -113,6 +116,13 @@ public class PlayerMovement : MonoBehaviour
                     transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = true;
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.E)) // Player 1 throws an obstacle
+            {
+                ThrowObstacle();
+                transform.GetChild(0).transform.GetComponent<Animator>().SetTrigger("throw");
+                transform.GetChild(1).transform.GetComponent<Animator>().SetTrigger("throw");
+            }
         }
         else if (identifier == "Player2")
         {
@@ -137,31 +147,110 @@ public class PlayerMovement : MonoBehaviour
                     transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = true;
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.O)) // Player 2 throws an obstacle
+            {
+                ThrowObstacle();
+                transform.GetChild(0).transform.GetComponent<Animator>().SetTrigger("throw");
+                transform.GetChild(1).transform.GetComponent<Animator>().SetTrigger("throw");
+
+            }
         }
+
     }
-
-    void OnTriggerEnter2D(Collider2D col)
+    void ThrowObstacle()
     {
-        GameObject.Find("Canvas").GetComponent<UIManager>().gameOver();
+        // Load the obstacle from Resources
+        GameObject obstaclePrefab = Resources.Load<GameObject>("rock");
 
-
-        if (this.identifier == "Player1")
+        if (obstaclePrefab != null)
         {
-            transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
-            transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
-            Instantiate(Resources.Load("explosion"), this.transform);
-            StartCoroutine(DestroyExplosion());
+            // Instantiate the obstacle at the throw point
+            GameObject obstacle = Instantiate(obstaclePrefab, throwPoint.position, Quaternion.identity);
+            obstacle.tag = "SabotageObstacle";
+
+            // Get Rigidbody2D component
+            Rigidbody2D rb = obstacle.GetComponent<Rigidbody2D>();
+
+            // Find the opponent's position
+            Vector2 targetPosition = Vector2.zero;
+
+            if (identifier == "Player1")
+            {
+                GameObject player2 = GameObject.FindWithTag("Player2");
+                if (player2 != null)
+                    targetPosition = player2.transform.position;
+            }
+            else if (identifier == "Player2")
+            {
+                GameObject player1 = GameObject.FindWithTag("Player1");
+                if (player1 != null)
+                    targetPosition = player1.transform.position;
+            }
+
+            if (rb != null && targetPosition != Vector2.zero)
+            {
+                // Calculate direction towards the target
+                Vector2 direction = (targetPosition - (Vector2)throwPoint.position).normalized;
+
+                // Apply velocity towards the target
+                rb.velocity = direction * throwForce;
+            }
+            // Play the throw sound
+            throwSounds.Play();
+            // Destroy the obstacle after 3 seconds (adjust if needed)
+            Destroy(obstacle, 3f);
         }
         else
         {
-            transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
-            transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
-            Instantiate(Resources.Load("explosion"), this.transform);
-            StartCoroutine(DestroyExplosion());
-
-
-
+            Debug.LogError("Obstacle prefab not found in Resources.");
         }
+    }
+
+
+
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+
+        if (col.CompareTag("SabotageObstacle"))
+        {
+            StopAllCoroutines(); // Stop all running coroutines
+            StartCoroutine(SlowDown(2f, 0.5f)); // Slow down for 2 seconds
+            Destroy(col.gameObject); // Remove the obstacle after hitting the player
+        }
+        else
+        {
+            StopAllCoroutines(); // Ensure speed modifiers don’t persist
+            GameObject.Find("Canvas").GetComponent<UIManager>().gameOver();
+
+
+
+            if (this.identifier == "Player1")
+            {
+                transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
+                transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
+                Instantiate(Resources.Load("explosion"), this.transform);
+                StartCoroutine(DestroyExplosion());
+            }
+            else
+            {
+                transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
+                transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
+                Instantiate(Resources.Load("explosion"), this.transform);
+                StartCoroutine(DestroyExplosion());
+            }
+        }
+
+    }
+    public IEnumerator SlowDown(float duration, float factor)
+    {
+        float originalSpeed = speedUp;  // Store the original speed
+
+        speedUp *= factor;  // Reduce speed
+        yield return new WaitForSeconds(duration);
+
+        speedUp = originalSpeed;  // Restore the exact original speed
     }
 
     IEnumerator DestroyExplosion()
