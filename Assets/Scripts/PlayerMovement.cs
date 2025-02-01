@@ -147,15 +147,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (this.identifier == "Player1")
         {
-transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
-transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
+            transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
+            transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
             Instantiate(Resources.Load("explosion"), this.transform);
             StartCoroutine(DestroyExplosion());
         }
         else
         {
             transform.GetChild(0).transform.GetComponent<SpriteRenderer>().enabled = false;
-transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
+            transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
             Instantiate(Resources.Load("explosion"), this.transform);
             StartCoroutine(DestroyExplosion());
 
@@ -168,7 +168,6 @@ transform.GetChild(1).transform.GetComponent<SpriteRenderer>().enabled = false;
     {
         yield return new WaitForSecondsRealtime(1.5f);
 
-        Debug.Log("here");
         GameObject g = GameObject.FindGameObjectWithTag("explosion");
         Destroy(g);
         GameObject.Find("Canvas").GetComponent<UIManager>().restart();

@@ -23,15 +23,17 @@ public class UIManager : MonoBehaviour
         playerMovement2 = GameObject.Find("Player2").GetComponent<PlayerMovement>();  // Player 2
         spawnObstacles = GameObject.Find("Canvas").GetComponent<SpawnObstacles>();
         buttonClick = GameObject.Find("buttonClick").GetComponent<AudioSource>();
-        mainUI.transform.Find("Score").GetComponent<Text>().text = "Score: " + PlayerPrefs.GetInt("bestScore", 0);
+        mainUI.transform.Find("Score").GetComponent<Text>().text = "Score: " + PlayerPrefs.GetInt("Score", 0);
     }
 
 
-private void Update() {
-    if(Input.GetKeyDown(KeyCode.Space)){
-        play();
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            play();
+        }
     }
-}
 
     public void play()
     {
@@ -106,6 +108,8 @@ private void Update() {
             PlayerPrefs.SetInt("Score", playerMovement2.score);
         }
         gameOverUI.SetActive(true);
+        GameObject.Find("PScore").GetComponent<Text>().text = "score: 0";  // Reset Player 1 score UI
+
         pauseButton.SetActive(false);
         Time.timeScale = 0;
     }
@@ -147,13 +151,12 @@ private void Update() {
         playerMovement2.positionX = -4; // Reset X position of Player 2
         playerMovement1.positionY = playerMovement1.lineTop.transform.position.y + (playerMovement1.playerHeight / 2); // Reset Y position of Player 1
         playerMovement2.positionY = playerMovement1.lineBottom.transform.position.y - (playerMovement2.playerHeight / 2); // Reset Y position of Player 2
-        //playerMovement1.speedUp = 0.01f; // Reset speed of Player 1
-        //playerMovement2.speedUp = 0.01f; // Reset speed of Player 2
+        playerMovement1.speedUp = 0.01f; // Reset speed of Player 1
+        playerMovement2.speedUp = 0.01f; // Reset speed of Player 2
         playerMovement1.timer = 0; // Reset Player 1's timer
         playerMovement2.timer = 0; // Reset Player 2's timer
 
         // Reset the score UI
-        GameObject.Find("PScore").GetComponent<Text>().text = "score: 0";  // Reset Player 1 score UI
 
         // Reset obstacles
         GameObject.Find("Canvas").GetComponent<SpawnObstacles>().deletedObstacleLevel = 0;
@@ -166,7 +169,7 @@ private void Update() {
         spawnObstacles.enabled = false;  // Disable obstacle spawning
         mainUI.SetActive(true);  // Show main UI
         gameplayUI.SetActive(false);  // Hide gameplay UI
-        mainUI.transform.Find("Score").GetComponent<Text>().text = "Score: " + PlayerPrefs.GetInt("bestScore", 0); // Update best score text
+        mainUI.transform.Find("Score").GetComponent<Text>().text = "Score: " + PlayerPrefs.GetInt("Score", 0); // Update best score text
         gameOverUI.SetActive(false);  // Hide game over UI
         buttonClick.Play();  // Play button click sound
     }
