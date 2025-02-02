@@ -42,6 +42,7 @@ Guide two stickman characters through endless obstacles in this thrilling 2D dua
 ![StartScreen](Screenshots/StartScreen.png)
 ![GamePlay](Screenshots/GamePlay.png)
 ![GameOver](Screenshots/GameOver.png)
+![TrelloPage](Screenshots/TrelloPage.png)
 ![Gif-Stickman](Screenshots/Gif-Stickman.gif)
 
 ## Contributing
