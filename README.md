@@ -35,7 +35,7 @@ Guide two stickman characters through endless obstacles in this thrilling 2D dua
 - [Pizza Is My Favorite Font](https://www.1001fonts.com/pizza-is-my-favorite-font.html)
 
 ## Screenshots
-![Sample Screenshot](path/to/sample-screenshot.png)
+![StartScreen](Screenshot/StartScreen.png)
 
 ## Contributing
 Feel free to submit pull requests or report issues to improve the game!
