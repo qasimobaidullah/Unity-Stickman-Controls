@@ -1,3 +1,7 @@
+![Gif-Stickman](Screenshots/Gif-Stickman.gif)
+
+
+
 # Dual-Control Stickman Adventure
 
 ## Description
